@@ -1,0 +1,11 @@
+{
+
+	"copy":true,
+	"copy-from": [""],
+	"copy-to": [""],
+	"date-format": "%Y-%m-%d@%H-%M",
+	"folder-names": "Timelapse",
+	"ffmpeg-options": {
+		"frames-per-second": 30
+	}
+}
