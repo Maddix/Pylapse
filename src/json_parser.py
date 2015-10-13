@@ -41,7 +41,7 @@ class Parse_json:
 
 	def check_property(self, dictionary, parent_property_name, property_name, required_type):
 		""" Checks to see if a property exists on a dictionary. """
-		return self.check_type(self.check_error(dictionary.get(property_name), "'{0}' requires but does not have property '{1}'.".format(parent_property_name, property_name)), required_type, property_name)
+		return self.check_type(self.check_error(dictionary.get(property_name), "'{0}' requires property '{1}'.".format(parent_property_name, property_name)), required_type, property_name)
 
 	def check_require(self, dictionary, properties_list, require_all=False):
 		""" Checks 'dictionary' for items in 'properties_types_list' and checks type. Throw error is all are missing.

@@ -1,10 +1,13 @@
 {
 
 	"copy":true,
-	"copy-from": [""],
-	"copy-to": [""],
-	"date-format": "%Y-%m-%d@%H-%M",
+	"source": ["F:\\", "DCIM", "100D7100"],
+	"destination": ["D:\\", "workspace", "project_testing"],
+	"create-destination-if-not-exists": true,
+	"file-name-and-date": "%Y-%m-%d_%I.%M.%S %p",
 	"folder-names": "Timelapse",
+	"copy-files-with-ending": ".jpg",
+	"remove-from-image-name": ["_DSC"],
 	"ffmpeg-options": {
 		"frames-per-second": 30
 	}
