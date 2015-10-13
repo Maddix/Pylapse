@@ -33,18 +33,18 @@ import src.json_parser as parser
 
 class Copy_images():
 
-	def __init__(self, source, destination, create_destination, file_name_and_date, copy_image_type, remove_from_image_name):
+	def __init__(self, source, destination, create_destination, file_name_and_date, copy_image_type):
 		self.source = self.create_path(source)
 		self.destination = self.create_path(destination, create_destination)
-		self.remove_from_image_name = remove_from_image_name
 		self.copy_image_type = copy_image_type
 		self.working_folder = os.path.join(self.destination, time.strftime(file_name_and_date, time.localtime()))
+
 		self.image_folder = "images"
 		self.video_folder = "video"
 
-
 		self.create_folders()
 		self.copied_images = self.copy_images()
+		self.renumber_images(self.copied_images)
 		#self.delete_images_from_card()
 
 	def create_folders(self):
@@ -57,7 +57,7 @@ class Copy_images():
 		""" Copy all files from source with a specific ending to destination. """
 		copied = []
 		for listed_file in os.listdir(self.source):
-			if listed_file.lower().endswith(self.copy_files_with_ending):
+			if listed_file.lower().endswith(self.copy_image_type):
 				shutil.copy(os.path.join(self.source, listed_file),
 							os.path.join(self.destination, self.working_folder, self.image_folder))
 				print(listed_file)
@@ -68,7 +68,8 @@ class Copy_images():
 		""" Renumber each image. """
 		image_name_list.sort()
 		for number in range(len(image_name_list)):
-			os.rename(os.path.join(self.destination, self.image_folder, image_name_list[number]), str(number + self.copy_image_type))
+			path = os.path.join(self.destination, self.working_folder, self.image_folder)
+			os.rename(os.path.join(path, image_name_list[number]), os.path.join(path, str(number) + self.copy_image_type))
 
 	def delete_images_from_card(self):
 		""" WARNING! Be very sure what you are doing! This can wipe files from your drive.
@@ -103,8 +104,10 @@ class Main():
 				("ffmpeg-options.frames-per-second", int)
 		]
 		self.config = parser.Handle_json(self.config_name, self.config_path, self.required_from_config)
-
-
+		self.copy_images = Copy_images(
+			self.config.get("image-options.source"), self.config.get("image-options.destination"),
+			self.config.get("image-options.create-destination-if-not-exists"), self.config.get("image-options.file-name-and-date"),
+			self.config.get("image-options.copy-image-type"))
 
 if __name__ == "__main__":
 	Main()

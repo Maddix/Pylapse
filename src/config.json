@@ -4,7 +4,7 @@
 		"destination": ["D:\\", "workspace", "project_testing"],
 		"create-destination-if-not-exists": true,
 		"file-name-and-date": "%Y-%m-%d_%I.%M.%S %p",
-		"image-type": ".jpg"
+		"copy-image-type": ".jpg"
 	},
 	"ffmpeg-options": {
 		"frames-per-second": 30
