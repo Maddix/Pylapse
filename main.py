@@ -31,38 +31,13 @@ import time
 import src.json_parser as parser
 
 
-class Parse_config(parser.Parse_json):
-
-	def __init__(self, config_file_name):
-
-		self.copy = False
-		self.source = []
-		self.destination = []
-		self.file_name_and_date = ""
-		self.create_destination = False
-		self.copy_files_with_ending = ""
-		self.ffmpeg_options = {}
-
-		self.config_file_name = config_file_name
-		self.loaded_config = self.load_json(config_file_name)
-		self.parse_config(self.loaded_config)
-
-	def parse_config(self, loaded_config):
-		self.copy = self.check_property(loaded_config, "config", "copy", bool)
-		self.source = self.check_property(loaded_config, "config", "source", list)
-		self.destination = self.check_property(loaded_config, "config", "destination", list)
-		self.create_destination = self.check_property(loaded_config, "config", "create-destination-if-not-exists", bool)
-		self.copy_files_with_ending = self.check_property(loaded_config, "config", "copy-files-with-ending", str)
-		self.file_name_and_date = self.check_property(loaded_config, "config", "file-name-and-date", str)
-		self.ffmpeg_options = self.check_property(loaded_config, "config", "ffmpeg-options", dict)
-
-
 class Copy_images():
 
-	def __init__(self, source, destination, create_destination, file_name_and_date, copy_files_with_ending):
+	def __init__(self, source, destination, create_destination, file_name_and_date, copy_image_type, remove_from_image_name):
 		self.source = self.create_path(source)
 		self.destination = self.create_path(destination, create_destination)
-		self.copy_files_with_ending = copy_files_with_ending
+		self.remove_from_image_name = remove_from_image_name
+		self.copy_image_type = copy_image_type
 		self.working_folder = os.path.join(self.destination, time.strftime(file_name_and_date, time.localtime()))
 		self.image_folder = "images"
 		self.video_folder = "video"
@@ -89,6 +64,12 @@ class Copy_images():
 				copied.append(listed_file)
 		return copied
 
+	def renumber_images(self, image_name_list):
+		""" Renumber each image. """
+		image_name_list.sort()
+		for number in range(len(image_name_list)):
+			os.rename(os.path.join(self.destination, self.image_folder, image_name_list[number]), str(number + self.copy_image_type))
+
 	def delete_images_from_card(self):
 		""" WARNING! Be very sure what you are doing! This can wipe files from your drive.
 			Clears the images from the SD card once they have been copied to the PC.
@@ -105,13 +86,27 @@ class Copy_images():
 				raise Exception("Path '{0}' does not exist!".format(path))
 		return path
 
+
+class Main():
+
+	def __init__(self):
+		self.config_name = "config.json"
+		self.config_path = "src"
+		self.required_from_config = [
+			("image-options", dict),
+				("image-options.source", list),
+				("image-options.destination", list),
+				("image-options.create-destination-if-not-exists", bool),
+				("image-options.file-name-and-date", str),
+				("image-options.copy-image-type", str),
+			("ffmpeg-options", dict),
+				("ffmpeg-options.frames-per-second", int)
+		]
+		self.config = parser.Handle_json(self.config_name, self.config_path, self.required_from_config)
+
+
+
 if __name__ == "__main__":
-	config = os.path.join("src", "config.json")
-	parse = Parse_config(config)
-	print(parse)
-	copy = Copy_images(parse.source, parse.destination, parse.create_destination, parse.file_name_and_date, parse.copy_files_with_ending)
-	print(copy)
-
-
+	Main()
 	input("Enter to close.")
 

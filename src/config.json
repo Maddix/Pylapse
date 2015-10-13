@@ -1,13 +1,11 @@
 {
-
-	"copy":true,
-	"source": ["F:\\", "DCIM", "100D7100"],
-	"destination": ["D:\\", "workspace", "project_testing"],
-	"create-destination-if-not-exists": true,
-	"file-name-and-date": "%Y-%m-%d_%I.%M.%S %p",
-	"folder-names": "Timelapse",
-	"copy-files-with-ending": ".jpg",
-	"remove-from-image-name": ["_DSC"],
+	"image-options": {
+		"source": ["F:\\", "DCIM", "100D7100"],
+		"destination": ["D:\\", "workspace", "project_testing"],
+		"create-destination-if-not-exists": true,
+		"file-name-and-date": "%Y-%m-%d_%I.%M.%S %p",
+		"image-type": ".jpg"
+	},
 	"ffmpeg-options": {
 		"frames-per-second": 30
 	}
