@@ -60,7 +60,6 @@ class Copy_images():
 			if listed_file.lower().endswith(self.copy_image_type):
 				shutil.copy(os.path.join(self.source, listed_file),
 							os.path.join(self.destination, self.working_folder, self.image_folder))
-				print(listed_file)
 				copied.append(listed_file)
 		return copied
 
@@ -105,8 +104,10 @@ class Main():
 		]
 		self.config = parser.Handle_json(self.config_name, self.config_path, self.required_from_config)
 		self.copy_images = Copy_images(
-			self.config.get("image-options.source"), self.config.get("image-options.destination"),
-			self.config.get("image-options.create-destination-if-not-exists"), self.config.get("image-options.file-name-and-date"),
+			self.config.get("image-options.source"),
+			self.config.get("image-options.destination"),
+			self.config.get("image-options.create-destination-if-not-exists"),
+			self.config.get("image-options.file-name-and-date"),
 			self.config.get("image-options.copy-image-type"))
 
 if __name__ == "__main__":
