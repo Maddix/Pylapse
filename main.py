@@ -87,6 +87,8 @@ class Handle_images():
 				raise Exception("Path '{0}' does not exist!".format(path))
 		return path
 
+	def add_quotes(self, path):
+		return '"{0}"'.format(path)
 
 class Main():
 
@@ -115,25 +117,31 @@ class Main():
 				("options.video-container", str),
 			("ffmpeg-command", list)
 		]
+		print("Loading Config.json..")
 		self.config = parser.Handle_json(self.config_name, self.config_path, self.required_from_config)
+		print("Done.\nCreating folders and copying images...")
 		self.handle_images = Handle_images(self.config)
-
-		print(self.build_ffmpeg_command(self.config, self.handle_images))
+		print("Done.\nCreating a video..")
+		self.built_command = self.build_ffmpeg_command(self.config, self.handle_images)
+		self.launch_ffmpeg_command(self.built_command)
+		print("Done.")
 
 	def build_ffmpeg_command(self, config, handle_images):
 		""" Add file paths and format ffmpeg-command string. """
 		command = config.get("ffmpeg-command")
-		index_of_input = command.index("-i")
+		# Path to ffmpeg.exe
+		command.insert(0, handle_images.add_quotes(os.path.join(os.path.abspath(""), "ffmpeg", "bin", command.pop(0))))
 		# Input image
+		index_of_input = command.index("-i")
 		if index_of_input is not -1:
-			input_with_path = os.path.join(handle_images.image_folder, command.pop(index_of_input+1))
+			input_with_path = handle_images.add_quotes(os.path.join(handle_images.image_folder, command.pop(index_of_input+1)))
 			command.insert(index_of_input+1, input_with_path)
 		# Output video
-		command.append(os.path.join(handle_images.video_folder, command.pop(-1)))
+		command.append(handle_images.add_quotes(os.path.join(handle_images.video_folder, command.pop(-1))))
 		return " ".join(command).format(**config.get("options"))
 
 	def launch_ffmpeg_command(self, built_command):
-		pass
+		subprocess.call(built_command)
 
 if __name__ == "__main__":
 	Main()

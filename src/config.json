@@ -8,10 +8,10 @@
 		"video-folder-name": "video"
 	},
 	"options": {
-		"image-number-total-pad": 4,
-		"image-name": "%04d",
+		"image-number-total-pad": 5,
+		"image-name": "%05d",
 		"image-type": ".jpg",
-		"image-per-second": 30,
+		"image-per-second": 15,
 		"image-start-number": 0,
 		"video-framerate": 30,
 		"video-codec": "libx264",
@@ -21,7 +21,7 @@
 		"video-container": ".mp4"
 	},
 	"ffmpeg-command":[
-		"ffmpeg",
+		"ffmpeg.exe",
 		"-framerate", 		"{image-per-second}",
 		"-start_number", 	"{image-start-number}",
 		"-i", 				"{image-name}{image-type}",
