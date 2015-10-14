@@ -4,6 +4,8 @@
 		"destination": ["D:\\", "workspace", "project_testing"],
 		"create-destination-if-not-exists": true,
 		"file-name-and-date": "%Y-%m-%d_%I.%M.%S %p",
+		"image-folder-name": "images",
+		"video-folder-name": "video"
 	},
 	"options": {
 		"image-number-total-pad": 4,
@@ -16,7 +18,7 @@
 		"video-height": 1920,
 		"video-width": 1080,
 		"video-output-name": "timelapse",
-		"video-container": "mp4"
+		"video-container": ".mp4"
 	},
 	"ffmpeg-command":[
 		"ffmpeg",
@@ -26,6 +28,6 @@
 		"-s:v", 			"{video-height}x{video-width}",
 		"-c:v", 			"{video-codec}",
 		"-r", 				"{video-framerate}",
-		"{video-output-name}.{video-container}"
+		"{video-output-name}{video-container}"
 	]
 }
