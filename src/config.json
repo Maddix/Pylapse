@@ -21,9 +21,9 @@
 	"ffmpeg-command":[
 		"ffmpeg",
 		"-framerate", 		"{image-per-second}",
-		"-start_number", 	"{image-start-number},
+		"-start_number", 	"{image-start-number}",
 		"-i", 				"{image-name}{image-type}",
-		"-s:v", 			"{video-height}x{video-width},
+		"-s:v", 			"{video-height}x{video-width}",
 		"-c:v", 			"{video-codec}",
 		"-r", 				"{video-framerate}",
 		"{video-output-name}.{video-container}"
