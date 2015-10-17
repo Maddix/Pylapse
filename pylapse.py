@@ -1,6 +1,8 @@
 #! usr/bin/python3
 # Maddix - Oct 2015 - Python 3.4
 
+# NOTE: Not tested. Remove when it is.
+
 """
 The MIT License (MIT)
 
@@ -35,6 +37,9 @@ if __name__ == "__main__":
 	folders = utils.Handle_folders(config)
 	print("Done.\nCopying images..")
 	images = utils.Handle_images(config, folders.source, folders.image_folder)
+	print("Done.\nLocating ffmpeg.exe..")
+	if not utils.check_for_ffmpeg(config):
+		raise Exception("Could not find ffmpeg.exe!")
 	print("Done.\nCreating video..")
 	video = utils.Create_video(config, folders.image_folder, folders.video_folder)
 	print("Done.")

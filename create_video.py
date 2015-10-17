@@ -29,25 +29,38 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import os
 import src.utils as utils
 
+# TODO: Logging
+
 def pick(folders, msg):
-	for number, folder in range(1, len(folders)), folders:
-		print("[{0}] {1}".format(number, folder))
-	print("(Enter 'quit' to exit.)")
+	print("Pick a folder or enter 'quit' to quit.", msg)
+	count = 1
+	for folder in folders:
+		print("[{0}] {1}".format(count, folder))
+		count += 1
 
 	while True:
-		picked = input(msg)
-		if picked is "quit" or picked is "'quit'":
+		picked = input(">> ")
+		if picked == "quit" or picked == "'quit'":
 			raise Exception("Bye!")
-		if picked.isnumeric() and -1 < picked <= len(folders):
-			return folders[picked]
+		if picked.isnumeric():
+			if -1 < int(picked) <= len(folders):
+				return folders[int(picked)]
+			else:
+				print("Please pick 1 to {0}.".format(len(folders)))
+		else:
+			print("Positive numbers only.")
 
 
 if __name__ == "__main__":
 	print("Loading Config.json..")
 	config = utils.Handle_json("config.json", "src", [("ffmpeg-command", list)])
 
+	print("Done.\nLocating ffmpeg.exe..")
+	if not utils.check_for_ffmpeg(config):
+		raise Exception("Could not find ffmpeg.exe!")
+
 	print("Done.\nLoading video folder..")
-	config.check_require([
+	config.check_required([
 			("folder-options", dict),
 				("folder-options.source", list),
 				("folder-options.destination", list),
@@ -60,7 +73,7 @@ if __name__ == "__main__":
 			])
 	destination = os.path.join(*config.get("folder-options.destination"))
 	folders = os.listdir(destination)
-	msg = "Create video from project. Pick {0} to {1}".format(min(0, len(choices)), len(choices))
+	msg = "Enter a positive number."
 	working_folder = os.path.join(destination, pick(folders, msg))
 	image_folder = os.path.join(destination, working_folder, config.get("folder-options.image-folder-name"))
 	video_folder = os.path.join(destination, working_folder, config.get("folder-options.video-folder-name"))

@@ -27,8 +27,20 @@ import os
 import subprocess
 import shutil
 import logging
+import json
 import time
 # time.strftime("%Y-%m-%d_%I.%M%p", time.localtime())
+
+def check_for_ffmpeg(config, logging=None):
+	""" Checks for ffmpeg.exe. Uses default path or a given one in the config.json. """
+	folder = os.path.join(os.path.abspath(""), "ffmpeg", "bin")
+	if config.has("ffmpeg-location"):
+		folder = os.path.join(*config.get("ffmpeg-location"))
+		if not os.path.isdir(folder):
+			raise Exception("'{0}' does not exist!".format(folder))
+	if "ffmpeg.exe" in os.listdir(folder):
+		return True
+	return False
 
 class Handle_json:
 
@@ -165,7 +177,7 @@ class Create_video:
 
 	def __init__(self, config, image_folder, video_folder, logging=None):
 		""" Create a video. """
-		self.launch_ffmpeg_command(self.build_ffmpeg_command(config, images))
+		self.launch_ffmpeg_command(self.build_ffmpeg_command(config, image_folder, video_folder))
 
 	def add_quotes(self, path):
 		""" Surround a string in quotes. """
