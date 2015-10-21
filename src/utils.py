@@ -106,14 +106,14 @@ class Handle_folders:
 				("folder-options.source", str),
 				("folder-options.destination", str),
 				("folder-options.create-destination-if-not-exists", bool),
-				("folder-options.file-name-and-date", str),
+				("folder-options.folder-name-and-date", str),
 				("folder-options.image-folder-name", str),
 				("folder-options.video-folder-name", str)])
 
 		self.source = self.create_path(config.get("folder-options.source"))
 		self.destination = self.create_path(config.get("folder-options.destination"),
 											config.get("folder-options.create-destination-if-not-exists"))
-		self.working_folder = os.path.join(self.destination, time.strftime(config.get("folder-options.file-name-and-date"), time.localtime()))
+		self.working_folder = os.path.join(self.destination, time.strftime(config.get("folder-options.folder-name-and-date"), time.localtime()))
 		self.image_folder = os.path.join(self.destination, self.working_folder, config.get("folder-options.image-folder-name"))
 		self.video_folder = os.path.join(self.destination, self.working_folder, config.get("folder-options.video-folder-name"))
 		self.create_folders(self.working_folder, self.image_folder, self.video_folder)
@@ -195,7 +195,10 @@ class Create_video:
 			command.insert(index_of_input+1, input_with_path)
 		# Output video
 		command.append(self.add_quotes(os.path.join(video_folder, command.pop(-1))))
-		return " ".join(command).format(**config.get("options"))
+		options = config.get("options")
+		output_name = "video-output-name"
+		options[output_name] = time.strftime(options[output_name], time.localtime())
+		return " ".join(command).format(**options)
 
 	def launch_ffmpeg_command(self, built_command):
 		""" Launch FFmpeg with the built command. """

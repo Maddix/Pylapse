@@ -1,9 +1,9 @@
 {
 	"folder-options": {
-		"source": ["D:\\", "pylapsePics"],
-		"destination": ["D:\\", "pylapse"],
+		"source": ["d:", "pylapsePics"],
+		"destination": ["d:", "pylapse_projects"],
 		"create-destination-if-not-exists": true,
-		"file-name-and-date": "%Y-%m-%d_%I.%M.%S %p",
+		"folder-name-and-date": "%Y-%m-%d_%I.%M.%S %p",
 		"image-folder-name": "images",
 		"video-folder-name": "video"
 	},
