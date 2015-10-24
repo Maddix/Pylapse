@@ -31,22 +31,22 @@ import src.utils as utils
 
 # TODO: Logging
 
-def pick(folders, msg):
-	print("Pick a folder or enter 'quit' to quit.", msg)
-	count = 1
+def pick(folders):
+	print("Pick a folder or enter 'quit' to quit. Enter a positive number.")
+	count = 0
 	for folder in folders:
-		print("[{0}] {1}".format(count, folder))
 		count += 1
+		print("[{0}] {1}".format(count, folder))
 
 	while True:
 		picked = input(">> ")
 		if picked == "quit" or picked == "'quit'":
 			raise Exception("Bye!")
 		if picked.isnumeric():
-			if -1 < int(picked) <= len(folders):
-				return folders[int(picked)]
+			if int(picked)-1 in range(len(folders)):
+				return folders[int(picked)-1]
 			else:
-				print("Please pick 1 to {0}.".format(len(folders)))
+				print("Please pick a number form 1 to {0}.".format(len(folders)))
 		else:
 			print("Positive numbers only.")
 
@@ -73,8 +73,7 @@ if __name__ == "__main__":
 			])
 	destination = os.path.join(*config.get("folder-options.destination"))
 	folders = os.listdir(destination)
-	msg = "Enter a positive number."
-	working_folder = os.path.join(destination, pick(folders, msg))
+	working_folder = os.path.join(destination, pick(folders))
 	image_folder = os.path.join(destination, working_folder, config.get("folder-options.image-folder-name"))
 	video_folder = os.path.join(destination, working_folder, config.get("folder-options.video-folder-name"))
 
