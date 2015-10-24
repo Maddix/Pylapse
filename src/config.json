@@ -17,7 +17,7 @@
 		"video-codec": "libx264",
 		"video-height": 1920,
 		"video-width": 1080,
-		"video-output-name": "timelapse",
+		"video-output-name": "%m-%d_%I.%M_timelapse",
 		"video-container": ".mp4"
 	},
 	"ffmpeg-command":[
