@@ -1,3 +1,5 @@
+#Json configuration
+
 `Config.json` is split into two parts. Folder configuration and video configuration.
 
 ##Folder Configuration
@@ -30,4 +32,32 @@ If you run pylapse for the first time and haven't created the path for `destinat
 * `video-folder-name`: `"videos"`
 
 ##Video Configuration
--todo
+
+Both `options` and `ffmpeg-command` make up the configuration for video creation.
+
+###Options
+
+Unlike `folder-options`, pylapse only requires a few properties from `options`.
+* image-number-total-pad
+* image-name
+* image-type
+* video-output-name
+
+Any remaining properties are used in `ffmpeg-command`.
+
+`image-number-total-pad` sets how many `0`s are added to image names when they are copied.
+`image-name` helps ffmpeg find the correct images. It should match
+`iamge-type` should be a string and should be the image format of your images. Pylapse will only copy images with this type.
+`video-output-name`
+
+####Example option configuration
+
+* `image-number-total-pad`: `5`
+* `image-name`: `"%05d"
+* `image-type`: `".jpeg"` or `".png"`
+* `video-output-name`: `"%m-%d_%I.%M_timelapse"`
+
+###FFmpeg-command
+
+`ffmpeg-command` holds all the commands that will be given to ffmpeg when pylapse kicks it off. Pylapse will match commands from `options` that are inside open `{` and close `}` brackets. Such as `{video-name}` or `{image-name}`.
+
